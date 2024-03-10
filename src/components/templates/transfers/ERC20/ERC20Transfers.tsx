@@ -10,6 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
+// Assuming you have the token's ABI. For the transfer function, it often looks like this:
+const tokenAbiFragment = [
+  "function transfer(address to, uint256 amount) returns (bool)",
+];
+
 const SendERC20Token = () => {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
@@ -28,28 +33,42 @@ const SendERC20Token = () => {
     }
 
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+      // Ensure MetaMask is connected and user's account is accessible
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const fromAddress = accounts[0]; // The first account is usually the user's primary account
 
-      const tokenAddress = "YOUR_TOKEN_CONTRACT_ADDRESS";
-      const tokenABI = [
-        // Insert the ABI of your ERC20 Token Contract here
-        "function transfer(address to, uint amount) returns (bool)",
-      ];
-
-      const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
-      const tx = await tokenContract.transfer(
-        recipient,
-        ethers.utils.parseUnits(amount, "ether")
+      // Token contract address and user's account address
+      const tokenAddress = "YOUR_ERC20_TOKEN_CONTRACT_ADDRESS";
+      const tokenContract = new ethers.Contract(
+        tokenAddress,
+        tokenAbiFragment,
+        new ethers.providers.Web3Provider(window.ethereum)
       );
 
-      await tx.wait();
+      // Encode the transaction to call the transfer function of the ERC20 token contract
+      const txData = tokenContract.interface.encodeFunctionData("transfer", [
+        recipient,
+        ethers.utils.parseUnits(amount, "18"),
+      ]);
+
+      // Send transaction through MetaMask
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: fromAddress,
+            to: tokenAddress,
+            data: txData,
+          },
+        ],
+      });
 
       toast({
-        title: "Transaction Successful",
-        description: `Tokens sent successfully! Transaction Hash: ${tx.hash}`,
-        status: "success",
+        title: "Transaction Submitted",
+        description: `Transaction hash: ${txHash}`,
+        status: "info",
         duration: 9000,
         isClosable: true,
       });
