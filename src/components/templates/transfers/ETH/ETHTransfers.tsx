@@ -29,25 +29,20 @@ const ETHTransfers = () => {
       const signer = provider.getSigner();
       ethers.utils.getAddress(recipient); // Validates the address
 
-      // Make a request to the API route to check if the transaction is approved by Arduino
-      const response = await fetch('/arduino_handshake', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recipient, amount }),
+      const response = await fetch("/api/arduino_handshake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send", recipient, amount }),
       });
 
-      if (!response.ok) {
-        throw new Error('Transaction not approved by Arduino');
-      }
+      if (!response.ok) throw new Error("Transaction not approved by Arduino");
 
       const tx = await signer.sendTransaction({
         to: recipient,
         value: ethers.utils.parseEther(amount),
       });
-      console.log("tx", tx);
-      setTxs([tx]);
+
+      setTxs([...txs, tx]);
       toast({
         title: "Transaction Submitted",
         description: `Transaction hash: ${tx.hash}`,
@@ -67,9 +62,39 @@ const ETHTransfers = () => {
     }
   };
 
+  const handleReceive = async () => {
+    try {
+      const response = await fetch("/api/arduino_handshake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "receive", recipient, amount }),
+      });
+
+      if (!response.ok)
+        throw new Error("Failed to receive approval from Arduino");
+
+      toast({
+        title: "Approval Received",
+        description: "Arduino handshake approved. Ready to receive.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Receiving Failed",
+        description: err.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box padding="4" maxW="md">
-      <Heading mb="6">Send ETH</Heading>
+      <Heading mb="6">ETH Transactions</Heading>
       <VStack spacing={5} as="form" onSubmit={(e) => e.preventDefault()}>
         <FormControl>
           <FormLabel htmlFor="recipient">Recipient Address</FormLabel>
@@ -95,7 +120,9 @@ const ETHTransfers = () => {
           <Button colorScheme="blue" onClick={startPayment}>
             Send
           </Button>
-          <Button colorScheme="green">Receive</Button>
+          <Button colorScheme="green" onClick={handleReceive}>
+            Receive
+          </Button>
         </HStack>
       </VStack>
       {txs.length > 0 && (
