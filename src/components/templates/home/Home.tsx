@@ -40,22 +40,6 @@ const Home = () => {
           <ListIcon as={CheckCircleIcon} color="green.500" />
           Using Moralis from client-side
         </ListItem>
-        <ListItem>
-          <ListIcon as={SettingsIcon} color="green.500" />
-          Adding explorer links to balances, transactions ...
-        </ListItem>
-        <ListItem>
-          <ListIcon as={SettingsIcon} color="green.500" />
-          Better responsive design
-        </ListItem>
-        <ListItem>
-          <ListIcon as={SettingsIcon} color="green.500" />
-          Rainbowkit integration
-        </ListItem>
-        <ListItem>
-          <ListIcon as={SettingsIcon} color="green.500" />
-          ... and more
-        </ListItem>
       </List>
     </VStack>
   );

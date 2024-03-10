@@ -13,15 +13,9 @@ const Footer = () => {
       <Text>
         ⭐️ Please star this{' '}
         <Link href={links.github} isExternal alignItems={'center'}>
-          wavewallet <ExternalLinkIcon />
+          WaveWallet <ExternalLinkIcon />
         </Link>
         , every star makes us very happy!
-      </Text>
-      <Text>
-        🙋 You have questions? Ask them on the{' '}
-        <Link href={links.forum} isExternal alignItems={'center'}>
-          Moralis forum <ExternalLinkIcon />
-        </Link>
       </Text>
       <Text>
         📖 Read more about{' '}
