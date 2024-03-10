@@ -27,10 +27,13 @@ const ETHTransfers = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       ethers.utils.getAddress(recipient); // Validates the address
+      ethers.utils.getAddress(recipient); // Validates the address
       const tx = await signer.sendTransaction({
         to: recipient,
         value: ethers.utils.parseEther(amount),
       });
+      console.log("tx", tx);
+      setTxs([tx]);
       console.log("tx", tx);
       setTxs([tx]);
       toast({
@@ -52,6 +55,12 @@ const ETHTransfers = () => {
     }
   };
 
+  // Function to handle the receiving process (listening for Arduino confirmation)
+  const handleReceive = () => {
+    window.open("http://localhost:http://127.0.0.1:5000/", "_blank");
+  };
+
+  // UI components for entering transaction details, sending, and receiving
   return (
     <Box padding="4" maxW="md">
       <Heading mb="6">Send ETH</Heading>
