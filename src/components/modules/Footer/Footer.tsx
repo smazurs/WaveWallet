@@ -11,9 +11,9 @@ const Footer = () => {
   return (
     <Box textAlign={'center'} w="full" p={6}>
       <Text>
-        Check out the code for{' '}
+        Check out the code for {' '}
         <Link href={links.github} isExternal alignItems={'center'}>
-          WaveWallet <ExternalLinkIcon />
+        WaveWallet <ExternalLinkIcon />
         </Link>
       </Text>
       <Text>
