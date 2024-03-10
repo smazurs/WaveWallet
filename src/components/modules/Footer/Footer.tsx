@@ -11,11 +11,10 @@ const Footer = () => {
   return (
     <Box textAlign={'center'} w="full" p={6}>
       <Text>
-        ⭐️ Please star this{' '}
+        Check out the code for{' '}
         <Link href={links.github} isExternal alignItems={'center'}>
           WaveWallet <ExternalLinkIcon />
         </Link>
-        , every star makes us very happy!
       </Text>
       <Text>
       Crypto Confidence, Unleashed by Waves: RF Authentication for Trustworthy Transactions. WAVEWALLET 2024™

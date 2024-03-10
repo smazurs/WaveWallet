@@ -59,7 +59,7 @@ const customTheme = extendTheme({
   styles: {
     global: (props: any) => ({
       body: {
-        bg: props.colorMode === 'dark' ? chakraTheme.colors.blackAlpha[300] : chakraTheme.colors.blackAlpha[50], // Set background color based on color mode
+        bg: props.colorMode === 'dark' ? chakraTheme.colors.black : chakraTheme.colors.blackAlpha[50], // Set background color based on color mode
       },
     }),
   },
