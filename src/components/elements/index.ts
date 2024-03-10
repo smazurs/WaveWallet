@@ -1,3 +1,3 @@
 export * from './ColorModeButton';
-export * from './MoralisLogo';
+export * from './WaveLogo';
 export * from './navigation';
