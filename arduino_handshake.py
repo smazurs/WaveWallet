@@ -38,7 +38,7 @@ if __name__ == '__main__':
     recipient = sys.argv[2]
     amount = float(sys.argv[3])
 
-    send_wallet_address = "0x11Ec4aF7f5e10068Cc07EDDC6884223a0b93b732"
+    send_wallet_address = "11Ec4aF7f5e10068Cc07EDDC6884223a0b93b732" # no 0x in front because it is an arbitrary hex tag
 
     if action == 'send':
         return_bool = send_function("COM10", recipient, send_wallet_address, amount)
