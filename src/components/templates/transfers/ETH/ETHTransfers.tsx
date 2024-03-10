@@ -9,21 +9,15 @@ import {
   useToast,
   VStack,
   Text,
-  HStack,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
-// Component for handling ETH transfers with Arduino handshake verification
 const ETHTransfers = () => {
-  // State variables for recipient address, amount to be sent, and transactions history
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [txs, setTxs] = useState([]);
-
-  // Chakra UI toast for showing notifications
   const toast = useToast();
 
-  // Function to initiate payment after Arduino handshake confirmation
   const startPayment = async () => {
     try {
       if (!window.ethereum)
@@ -33,10 +27,13 @@ const ETHTransfers = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       ethers.utils.getAddress(recipient); // Validates the address
+      ethers.utils.getAddress(recipient); // Validates the address
       const tx = await signer.sendTransaction({
         to: recipient,
         value: ethers.utils.parseEther(amount),
       });
+      console.log("tx", tx);
+      setTxs([tx]);
       console.log("tx", tx);
       setTxs([tx]);
       toast({
@@ -88,14 +85,9 @@ const ETHTransfers = () => {
             placeholder="Enter amount"
           />
         </FormControl>
-        <HStack spacing={4}>
-          <Button colorScheme="blue" onClick={startPayment}>
-            Send
-          </Button>
-          <Button colorScheme="green" onClick={handleReceive}>
-            Receive
-          </Button>
-        </HStack>
+        <Button colorScheme="blue" onClick={startPayment}>
+          Pay now
+        </Button>
       </VStack>
       {txs.length > 0 && (
         <Box mt="4">
