@@ -1,117 +1,82 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Heading,
-  useToast,
-} from "@chakra-ui/react";
+import { useState } from "react";
 import { ethers } from "ethers";
+import ErrorMessage from "./ErrorMessage";
+import TxList from "./TxList";
 
-// Assuming you have the token's ABI. For the transfer function, it often looks like this:
-const tokenAbiFragment = [
-  "function transfer(address to, uint256 amount) returns (bool)",
-];
+const startPayment = async ({ setError, setTxs, ether, addr }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
 
-const SendERC20Token = () => {
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
-  const toast = useToast();
+    await window.ethereum.send("eth_requestAccounts");
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    ethers.utils.getAddress(addr); // Validates the address
+    const tx = await signer.sendTransaction({
+      to: addr,
+      value: ethers.utils.parseEther(ether), // Parses the ether amount to the correct format for the transaction
+    });
+    console.log({ ether, addr });
+    console.log("tx", tx);
+    setTxs([tx]);
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
-  const sendToken = async () => {
-    if (!window.ethereum) {
-      toast({
-        title: "MetaMask is not installed",
-        description: "Please install MetaMask to use this feature.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
+export default function App() {
+  const [error, setError] = useState();
+  const [txs, setTxs] = useState([]);
 
-    try {
-      // Ensure MetaMask is connected and user's account is accessible
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const fromAddress = accounts[0]; // The first account is usually the user's primary account
-
-      // Token contract address and user's account address
-      const tokenAddress = "YOUR_ERC20_TOKEN_CONTRACT_ADDRESS";
-      const tokenContract = new ethers.Contract(
-        tokenAddress,
-        tokenAbiFragment,
-        new ethers.providers.Web3Provider(window.ethereum)
-      );
-
-      // Encode the transaction to call the transfer function of the ERC20 token contract
-      const txData = tokenContract.interface.encodeFunctionData("transfer", [
-        recipient,
-        ethers.utils.parseUnits(amount, "18"),
-      ]);
-
-      // Send transaction through MetaMask
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: fromAddress,
-            to: tokenAddress,
-            data: txData,
-          },
-        ],
-      });
-
-      toast({
-        title: "Transaction Submitted",
-        description: `Transaction hash: ${txHash}`,
-        status: "info",
-        duration: 9000,
-        isClosable: true,
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Transaction Failed",
-        description: error.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    setError(); // Clear previous errors
+    await startPayment({
+      setError,
+      setTxs,
+      ether: data.get("ether"), // Gets the ether amount from the form
+      addr: data.get("addr"), // Gets the recipient address from the form
+    });
   };
 
   return (
-    <Box padding="4" maxW="md">
-      <Heading mb="6">Send ERC20 Token</Heading>
-      <FormControl>
-        <FormLabel htmlFor="recipient">Recipient Address</FormLabel>
-        <Input
-          id="recipient"
-          type="text"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          placeholder="Enter recipient address"
-        />
-      </FormControl>
-      <FormControl mt="4">
-        <FormLabel htmlFor="amount">Amount</FormLabel>
-        <Input
-          id="amount"
-          type="text"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Enter amount"
-        />
-      </FormControl>
-      <Button mt="4" colorScheme="blue" onClick={sendToken}>
-        Send Token
-      </Button>
-    </Box>
+    <form className="m-4" onSubmit={handleSubmit}>
+      <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
+        <main className="mt-4 p-4">
+          <h1 className="text-xl font-semibold text-gray-700 text-center">
+            Send ETH payment
+          </h1>
+          <div className="">
+            <div className="my-3">
+              <input
+                type="text"
+                name="addr"
+                className="input input-bordered block w-full focus:ring focus:outline-none"
+                placeholder="Recipient Address"
+              />
+            </div>
+            <div className="my-3">
+              <input
+                name="ether"
+                type="text"
+                className="input input-bordered block w-full focus:ring focus:outline-none"
+                placeholder="Amount in ETH"
+              />
+            </div>
+          </div>
+        </main>
+        <footer className="p-4">
+          <button
+            type="submit"
+            className="btn btn-primary submit-button focus:ring focus:outline-none w-full"
+          >
+            Pay now
+          </button>
+          <ErrorMessage message={error} />
+          <TxList txs={txs} />
+        </footer>
+      </div>
+    </form>
   );
-};
-
-export default SendERC20Token;
+}
