@@ -77,38 +77,8 @@ const ETHTransfers = () => {
   };
 
   // Function to handle the receiving process (listening for Arduino confirmation)
-  const handleReceive = async () => {
-    try {
-      // Similar to startPayment but with action set to 'receive'
-      const response = await fetch("/api/arduino_handshake", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "receive", recipient, amount }),
-      });
-
-      // Checks for Arduino approval for receiving
-      if (!response.ok)
-        throw new Error("Failed to receive approval from Arduino");
-
-      // Shows a success notification on receiving Arduino handshake approval
-      toast({
-        title: "Approval Received",
-        description: "Arduino handshake approved. Ready to receive.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } catch (err) {
-      // Catches and logs any errors, shows an error notification
-      console.error(err);
-      toast({
-        title: "Receiving Failed",
-        description: err.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
+  const handleReceive = () => {
+    window.open("http://localhost:5000/", "_blank");
   };
 
   // UI components for entering transaction details, sending, and receiving
