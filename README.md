@@ -1,81 +1,50 @@
-# `ethereum-boilerplate`
+# WaveWallet
 
-> Fully Typescript ready NextJS components for fast building dApps without running own backend
-
-🚀DEMO: https://eth-boilerplate.vercel.app/
-
-This boilerplate is built with [Moralis](https://moralis.io?utm_source=github&utm_medium=readme&utm_campaign=ethereum-boilerplate)
-
-You need active web3 provider/wallet only for authentication. All pages in this boilerplate do not require an active web3 provider, they use Moralis Web3 API. Moralis supports the most popular blockchains and their test networks. You can find a list of all available networks in [Moralis Supported Chains](https://docs.moralis.io/reference/supported-chains-nft)
-
-Please check the [official documentation of Moralis](https://docs.moralis.io/) for all the functionalities of Moralis.
+WaveWallet is an Ethereum dapp pioneering project aimed at redefining the interaction between crypto wallets by leveraging Radio Frequency (RF) signals for communication. This initiative brings to the forefront a seamless integration between hardware and blockchain technology, enabling direct wallet-to-wallet communications and transactions without the need for internet connectivity.
 
 ![eth-boilerplate](https://user-images.githubusercontent.com/78314301/186810447-fa66cd80-5bbb-4e41-b29f-862c8cc67d43.gif)
 
-# ⭐️ `Star us`
+## Main Features
 
-If this boilerplate helps you build Ethereum dapps faster - please star this project, every star makes us very happy!
+- **Wallet-to-Wallet Communication**: Securely send and receive cryptocurrencies and NFTs between wallets over RF signals.
+- **Arduino RF Communication**: Leverage Arduino hardware to establish a decentralized network of crypto wallets communicating via RF.
+- **Blockchain Integration**: Utilize Ethereum blockchain technologies for transaction integrity and verification without direct internet access.
+- **Secure Handshakes and Transactions**: Implement cryptographic methods to ensure secure handshakes between devices, followed by verified transactions.
 
-# 🤝 `Need help?`
-
-If you need help with setting up the boilerplate or have other questions - don't hesitate to write in our community forum and we will check asap. [Forum link](https://forum.moralis.io/t/ethereum-boilerplate-questions/3951/86). The best thing about this boilerplate is the super active community ready to help at any time! We help each other.
-
-# 🚀 `Quick Start`
-
-<div justify="center">
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fethereum-boilerplate%2Fethereum-boilerplate&env=MORALIS_API_KEY,NEXTAUTH_SECRET&envDescription=1.%20MORALIS_API_KEY%3A%20Visit%20admin.moralis.io.%202.%20NEXTAUTH_SECRET%3A%20Used%20for%20encrypting%20JWT%20tokens.%20You%20can%20put%20any%20or%20generate%20it%20on%20https%3A%2F%2Fgenerate-secret.now.sh%2F32&envLink=https%3A%2F%2Fgithub.com%2Fethereum-boilerplate%2Fethereum-boilerplate%23-quick-start"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/ethereum-boilerplate/ethereum-boilerplate"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
-</div>
-
-📄 Clone or fork `ethereum-boilerplate`:
+**Clone or fork `WaveWallet`:**
 
 ```sh
-git clone https://github.com/ethereum-boilerplate/ethereum-boilerplate.git
+git clone https://github.com/smazurs/WaveWallet.git
 ```
 
-💿 Install all dependencies:
+**Install all dependencies:**
 
-```sh
-cd ethereum-boilerplate
-yarn install
+```bash
+npm install
 ```
 
-✏ Rename `.env.local.example` to `.env.local` and provide required data. Get your Web3 Api Key from the [Moralis dashboard](https://admin.moralis.io/):
+ **Run WaveWallet:**
 
-![image](https://user-images.githubusercontent.com/78314301/186810270-7c365d43-ebb8-4546-a383-32983fbacef9.png)
-
-🖊️ Fill the environment variables in your .env.local file in the app root:
-
-- `MORALIS_API_KEY`: You can get it [here](https://admin.moralis.io/web3apis).
-- `NEXTAUTH_URL`: Your app address. In the development stage, use http://localhost:3000.
-- `NEXTAUTH_SECRET`: Used for encrypting JWT tokens of users. You can put any value here or generate it on https://generate-secret.now.sh/32.
-
-Example:
-
-```
-MORALIS_API_KEY=xxxx
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=7197b3e8dbee5ea6274cab37245eec212
+```bash
+npm run dev
 ```
 
-🚴‍♂️ Run your App:
+This will initiate the WaveWallet application, enabling RF communication and blockchain interactions through the user interface.
 
-```sh
-yarn start
-```
+## Technology Stack
 
-# 🧭 `Table of contents`
+- **Frontend**: Next.js for the user interface, facilitating wallet management and transaction initiation.
+- **Backend**: Moralis Web3 API for interacting with the Ethereum blockchain, and custom Arduino scripts for RF communication.
+- **Hardware**: Arduino modules equipped with RF transmitters and receivers for offline communication.
 
-- [`ethereum-boilerplate`](#ethereum-boilerplate)
-- [🚀 Quick Start](#-quick-start)
-- [🧭 Table of contents](#-table-of-contents)
+# 🧭 Table of contents
+
 - [🏗 Ethereum Components](#-ethereum-components)
   - [`<NFTBalances />`](#nftbalances-)
   - [`<ERC20Balances />`](#erc20balances-)
   - [`<ERC20Transfers />`](#erc20transfers-)
   - [`<NFTTransfers />`](#nfttransfers-)
   - [`<Transactions />`](#transactions-)
-- [✨ Contributors](#-contributors)
 
 # 🏗 Ethereum Components
 
@@ -85,7 +54,7 @@ yarn start
 
 location: `src/component/templates/balances/NFT/NFTBalances.tsx`
 
-🎨 `<NFTBalances />` : displays the user's balances. Uses Moralis Evm API (does not require an active web3 provider).
+🎨 `<NFTBalances />` : displays the user's balances. Uses Moralis Evm API.
 
 ### `<ERC20Balances />`
 
@@ -93,7 +62,7 @@ location: `src/component/templates/balances/NFT/NFTBalances.tsx`
 
 location: `src/component/templates/balances/ERC20/ERC20Balances.tsx`
 
-💰 `<ERC20Balances />` : displays the user's ERC20 balances. Uses Moralis Evm API (does not require an active web3 provider).
+💰 `<ERC20Balances />` : displays the user's ERC20 balances.
 
 ### `<ERC20Transfers />`
 
@@ -101,7 +70,7 @@ location: `src/component/templates/balances/ERC20/ERC20Balances.tsx`
 
 location: `src/component/templates/transfers/ERC20/ERC20Transfers.tsx`
 
-💰 `<ERC20Transfers />` : displays the user's ERC20 transfers. Uses Moralis Evm API (does not require an active web3 provider).
+💰 `<ERC20Transfers />` : displays the user's ERC20 transfers.
 
 ### `<NFTTransfers />`
 
@@ -109,7 +78,7 @@ location: `src/component/templates/transfers/ERC20/ERC20Transfers.tsx`
 
 location: `src/component/templates/transfers/NFT/NFTTransfers.tsx`
 
-🎨 `<NFTTransfers />` : displays the user's NFT transfers. Uses Moralis Evm API (does not require an active web3 provider).
+🎨 `<NFTTransfers />` : displays the user's NFT transfers.
 
 ### `<Transactions />`
 
@@ -117,14 +86,8 @@ location: `src/component/templates/transfers/NFT/NFTTransfers.tsx`
 
 location: `src/component/templates/transactions/Transactions.tsx`
 
-💰 `<Transactions />` : displays the user's transactions. Uses Moralis Evm API (does not require an active web3 provider).
+💰 `<Transactions />` : displays the user's transactions.
 
-# ✨ Contributors
+## License
 
-Feel free to contribute 🧙 to `ethereum-boilerplate` project. But first, **please read the [Contributing Guidelines](CONTRIBUTING.md) before opening an issue or PR** so you understand the branching strategy and local development environment.
-
-<a href="https://github.com/ethereum-boilerplate/ethereum-boilerplate/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ethereum-boilerplate/ethereum-boilerplate" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
+WaveWallet is open-sourced software licensed under the MIT license.
