@@ -11,13 +11,7 @@ const Footer = () => {
   return (
     <Box textAlign={'center'} w="full" p={6}>
       <Text>
-        Check out the code for {' '}
-        <Link href={links.github} isExternal alignItems={'center'}>
-        WaveWallet <ExternalLinkIcon />
-        </Link>
-      </Text>
-      <Text>
-      Crypto Confidence, Unleashed by Waves: RF Authentication for Trustworthy Transactions. WAVEWALLET 2024™
+      © 2024 WaveWallet. All rights reserved.
       </Text>
     </Box>
   );
