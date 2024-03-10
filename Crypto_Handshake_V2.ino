@@ -10,10 +10,10 @@ const byte address2[5] = {'R','x','B','B','B'};
 
 RF24 radio(CE_PIN, CSN_PIN);
 
-char receive_data[32]; // this length must match dataToSend in the TX
+char receive_data[21]; // this length must match dataToSend in the TX
 bool new_data = false;
 
-char data_to_send[32];
+char data_to_send[21];
 bool rslt = false;
 
 String read_serial = "";
@@ -24,6 +24,12 @@ String my_wallet = "";
 String your_wallet = "";
 char tr = 'a';
 bool run_bool = false;
+String channel_str = "";
+int channel_int = 0;
+bool yours_mine = true;
+bool init_1 = false;
+bool init_2 = false;
+bool final_bool = false;
 
 
 void setup() {
@@ -36,25 +42,96 @@ void setup() {
   run_bool = fsm_setup();
 
   if (run_bool == true){
-    if (tr == 's'){
+    if (tr == 't'){
+      yours_mine = true;
       send_string();
+      delay(250);
+
+//      hop_m(15);
+//      delay(250);
+      
       receive_string();
+      delay(250);
+
+//      hop_s();
+//      delay(250);
+      
       if (received_string == my_wallet){
+        init_1 = true;
+      }
+      else{
+        init_1 = false;
+      }
+      
+      yours_mine = false;
+      receive_string();
+      delay(250);
+
+//      hop_s();
+//      delay(250);
+      
+      if (received_string == your_wallet){
+        init_2 = true;
+      }
+      else{
+        init_2 = false;
+      }
+
+      send_string();
+      delay(250);
+      
+
+      if (init_1 & init_2){
         Serial.println("ok");
       }
       else{
-        Serial.println("send wrong");
+        Serial.println("transmit wrong");
       }
+      
     }
     else if (tr == 'r'){
+      yours_mine = true;
       receive_string();
+      delay(250);
+
+//      hop_s();
+//      delay(250);
+      
       if (received_string == my_wallet){
+        init_1 = true;
+      }
+      else{
+        init_1 = false;
+      }
+      send_string();
+      delay(250);
+
+//      hop_m(25);
+//      delay(250);
+      
+      yours_mine = false;
+      send_string();
+      delay(250);
+
+//      hop_m(35);
+//      delay(250);
+      
+      receive_string();
+      delay(250);
+      
+      if (received_string == your_wallet){
+        init_2 = true;
+      }
+      else{
+        init_2 = false;
+      }
+      if (init_1 & init_2){
         Serial.println("ok");
       }
       else{
         Serial.println("receive wrong");
       }
-      send_string();
+      
     }
   }
   
@@ -106,19 +183,35 @@ bool fsm_setup(){
 }
 
 void send_string(){
-  for (int i = 0; i < 8; i++){
-    for (int j = 0; j < 32; j++){
-      data_to_send[j] = my_wallet[i * 32 + j];
+  radio.stopListening();
+  if (yours_mine == true){
+    for (int i = 0; i < 2; i++){
+      for (int j = 0; j < 20; j++){
+        data_to_send[j] = your_wallet[i * 20 + j];
+      }
+      while (rslt == false){            //send verification data
+        send_data();
+      }
+      rslt = false;
     }
-    while (rslt == false){            //send verification data
-      send_data();
+  }
+  else{
+    for (int i = 0; i < 2; i++){
+      for (int j = 0; j < 20; j++){
+        data_to_send[j] = my_wallet[i * 20 + j];
+      }
+      while (rslt == false){            //send verification data
+        send_data();
+      }
+      rslt = false;
     }
-    rslt = false;
   }
 }
 
 void receive_string(){
-  for (int i = 0; i < 8; i++){
+  received_string = "";
+  radio.startListening();
+  for (int i = 0; i < 2; i++){
     while (new_data == false){
       get_data();
     }
@@ -129,6 +222,36 @@ void receive_string(){
 
 void parse_serial(){
   tr = read_serial[0];
-  my_wallet = read_serial.substring(129);
-  your_wallet = read_serial.substring(1,128);
+  for (int i = 1; i < 41; i++){
+    my_wallet += read_serial[i];
+  }
+  for (int i = 41; i < 81; i++){
+    your_wallet += read_serial[i];
+  }
+  Serial.println(my_wallet);
+}
+
+void hop_m(int channel){
+  channel_str = static_cast<String>(channel);
+  data_to_send[0] = channel_str[0];
+  data_to_send[1] = channel_str[1];
+
+  while (rslt == false){            //send verification data
+    send_data();
+  }
+  rslt = false;
+
+  radio.setChannel(channel);
+}
+
+void hop_s(){
+  while (new_data == false){
+    get_data();
+  }
+  new_data = false;
+  channel_str += receive_data[0];
+  channel_str += receive_data[1];
+  channel_int = channel_str.toInt();
+
+  radio.setChannel(channel_int);
 }
