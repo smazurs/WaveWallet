@@ -1,0 +1,38 @@
+{
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonColored.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonColored.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonColored_js.js"
+    ]
+  },
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonCustom.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonCustom.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonCustom_js.js"
+    ]
+  },
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonOutline.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonOutline.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonOutline_js.js"
+    ]
+  },
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonPrimary.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonPrimary.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonPrimary_js.js"
+    ]
+  },
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonSecondary.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonSecondary.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonSecondary_js.js"
+    ]
+  },
+  "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonTranslucent.js": {
+    "id": "..\\node_modules\\@web3uikit\\core\\dist\\index.js -> ./ButtonTranslucent.js",
+    "files": [
+      "static/chunks/node_modules_web3uikit_core_dist_ButtonTranslucent_js.js"
+    ]
+  }
+}
