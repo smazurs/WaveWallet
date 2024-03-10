@@ -1,82 +1,95 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Heading,
+  useToast,
+  VStack,
+  Text,
+} from "@chakra-ui/react";
 import { ethers } from "ethers";
-import ErrorMessage from "./ErrorMessage";
-import TxList from "./TxList";
 
-const startPayment = async ({ setError, setTxs, ether, addr }) => {
-  try {
-    if (!window.ethereum)
-      throw new Error("No crypto wallet found. Please install it.");
-
-    await window.ethereum.send("eth_requestAccounts");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    ethers.utils.getAddress(addr); // Validates the address
-    const tx = await signer.sendTransaction({
-      to: addr,
-      value: ethers.utils.parseEther(ether), // Parses the ether amount to the correct format for the transaction
-    });
-    console.log({ ether, addr });
-    console.log("tx", tx);
-    setTxs([tx]);
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
-export default function App() {
-  const [error, setError] = useState();
+const ERC20Transfers = () => {
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState("");
   const [txs, setTxs] = useState([]);
+  const toast = useToast();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    setError(); // Clear previous errors
-    await startPayment({
-      setError,
-      setTxs,
-      ether: data.get("ether"), // Gets the ether amount from the form
-      addr: data.get("addr"), // Gets the recipient address from the form
-    });
+  const startPayment = async () => {
+    try {
+      if (!window.ethereum)
+        throw new Error("No crypto wallet found. Please install it.");
+
+      await window.ethereum.send("eth_requestAccounts");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      ethers.utils.getAddress(recipient); // Validates the address
+      const tx = await signer.sendTransaction({
+        to: recipient,
+        value: ethers.utils.parseEther(amount),
+      });
+      console.log("tx", tx);
+      setTxs([tx]);
+      toast({
+        title: "Transaction Submitted",
+        description: `Transaction hash: ${tx.hash}`,
+        status: "info",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Transaction Failed",
+        description: err.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
-    <form className="m-4" onSubmit={handleSubmit}>
-      <div className="credit-card w-full lg:w-1/2 sm:w-auto shadow-lg mx-auto rounded-xl bg-white">
-        <main className="mt-4 p-4">
-          <h1 className="text-xl font-semibold text-gray-700 text-center">
-            Send ETH payment
-          </h1>
-          <div className="">
-            <div className="my-3">
-              <input
-                type="text"
-                name="addr"
-                className="input input-bordered block w-full focus:ring focus:outline-none"
-                placeholder="Recipient Address"
-              />
-            </div>
-            <div className="my-3">
-              <input
-                name="ether"
-                type="text"
-                className="input input-bordered block w-full focus:ring focus:outline-none"
-                placeholder="Amount in ETH"
-              />
-            </div>
-          </div>
-        </main>
-        <footer className="p-4">
-          <button
-            type="submit"
-            className="btn btn-primary submit-button focus:ring focus:outline-none w-full"
-          >
-            Pay now
-          </button>
-          <ErrorMessage message={error} />
-          <TxList txs={txs} />
-        </footer>
-      </div>
-    </form>
+    <Box padding="4" maxW="md">
+      <Heading mb="6">Send ETH</Heading>
+      <VStack spacing={5} as="form" onSubmit={(e) => e.preventDefault()}>
+        <FormControl>
+          <FormLabel htmlFor="recipient">Recipient Address</FormLabel>
+          <Input
+            id="recipient"
+            type="text"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            placeholder="Enter recipient address"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="amount">Amount in ETH</FormLabel>
+          <Input
+            id="amount"
+            type="text"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Enter amount"
+          />
+        </FormControl>
+        <Button colorScheme="blue" onClick={startPayment}>
+          Pay now
+        </Button>
+      </VStack>
+      {txs.length > 0 && (
+        <Box mt="4">
+          <Heading size="md">Transaction History</Heading>
+          {txs.map((tx, index) => (
+            <Text key={index}>Tx Hash: {tx.hash}</Text>
+          ))}
+        </Box>
+      )}
+    </Box>
   );
-}
+};
+
+export default ERC20Transfers;
