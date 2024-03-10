@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme, ColorModeScript, theme as chakraTheme } from '@chakra-ui/react';
 import { createClient, WagmiConfig } from 'wagmi';
 import { configureChains } from '@wagmi/core';
 import {
@@ -19,7 +19,6 @@ import {
   polygonMumbai,
   sepolia,
 } from '@wagmi/core/chains';
-import { extendTheme } from '@chakra-ui/react';
 import { publicProvider } from 'wagmi/providers/public';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
@@ -52,16 +51,24 @@ const client = createClient({
   autoConnect: true,
 });
 
-const config = {
-  initialColorMode: 'dark',
-  useSystemColorMode: false,
-};
-
-const theme = extendTheme({ config });
+const customTheme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+  },
+  styles: {
+    global: (props: any) => ({
+      body: {
+        bg: props.colorMode === 'dark' ? chakraTheme.colors.blackAlpha[300] : chakraTheme.colors.blackAlpha[50], // Set background color based on color mode
+      },
+    }),
+  },
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ChakraProvider resetCSS theme={theme}>
+    <ChakraProvider resetCSS theme={customTheme}>
+      <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
       <WagmiConfig client={client}>
         <SessionProvider session={pageProps.session} refetchInterval={0}>
           <Component {...pageProps} />
