@@ -2,7 +2,7 @@
 
 WaveWallet is an Ethereum dapp pioneering project aimed at redefining the interaction between crypto wallets by leveraging Radio Frequency (RF) signals for communication. This initiative brings to the forefront a seamless integration between hardware and blockchain technology, enabling direct wallet-to-wallet communications and transactions without the need for internet connectivity.
 
-![eth-boilerplate](https://user-images.githubusercontent.com/78314301/186810447-fa66cd80-5bbb-4e41-b29f-862c8cc67d43.gif)
+![](https://user-images.githubusercontent.com/78314301/186810447-fa66cd80-5bbb-4e41-b29f-862c8cc67d43.gif)
 
 ## Main Features
 
