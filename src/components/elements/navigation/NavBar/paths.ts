@@ -11,9 +11,9 @@ const NAV_LINKS: ISubNav[] = [
     href: "/transfers",
     children: [
       {
-        label: "ERC20",
-        subLabel: "Transfer ERC20 tokens between addresses",
-        href: "/transfers/erc20",
+        label: "ETH",
+        subLabel: "Transfer ETH between addresses",
+        href: "/transfers/ETH",
         logo: "token",
       },
       {
@@ -29,9 +29,9 @@ const NAV_LINKS: ISubNav[] = [
     href: "/balances",
     children: [
       {
-        label: "ERC20",
-        subLabel: "Get your ERC20 balances",
-        href: "/balances/erc20",
+        label: "ETH",
+        subLabel: "Get your ETH balances",
+        href: "/balances/ETH",
         logo: "token",
       },
       {

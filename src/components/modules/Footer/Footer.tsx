@@ -18,10 +18,7 @@ const Footer = () => {
         , every star makes us very happy!
       </Text>
       <Text>
-        📖 Read more about{' '}
-        <Link href={links.moralis} isExternal alignItems={'center'}>
-          Moralis <ExternalLinkIcon />
-        </Link>
+      Crypto Confidence, Unleashed by Waves: RF Authentication for Trustworthy Transactions. WAVEWALLET 2024™
       </Text>
     </Box>
   );

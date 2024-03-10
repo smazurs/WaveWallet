@@ -1,10 +1,10 @@
 import { Default } from 'components/layouts/Default';
-import { ERC20Balances } from 'components/templates/balances/ERC20';
+import { ETHTransfers } from 'components/templates/transfers/ETH';
 
 const ERC20 = () => {
   return (
-    <Default pageName="ERC20 Balances">
-      <ERC20Balances />
+    <Default pageName="ETH Transfers">
+      <ETHTransfers />
     </Default>
   );
 };

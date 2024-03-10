@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <VStack w={'full'}>
       <Heading size="md" marginBottom={6}>
-        WaveWallet
+        Welcome to wavewallet
       </Heading>
       <List spacing={3}>
         <ListItem>
@@ -14,15 +14,15 @@ const Home = () => {
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
-          Display Transactions
+          Display Transaction History
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
-          Display ERC20 transfers
+          Send and recieve ETH
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
-          Display ERC20 balances
+          Display ETH balances
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
@@ -34,7 +34,7 @@ const Home = () => {
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
-          Multichain Support
+          MetaMask integration
         </ListItem>
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />

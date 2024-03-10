@@ -21,7 +21,7 @@ import { useEffect } from 'react';
 import { getEllipsisTxt } from 'utils/format';
 import { useNetwork } from 'wagmi';
 
-const ERC20Balances = () => {
+const ETHBalances = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
   const { data } = useSession();
   const { chain } = useNetwork();
@@ -78,10 +78,10 @@ const ERC20Balances = () => {
           </TableContainer>
         </Box>
       ) : (
-        <Box>Looks Like you do not have any ERC20 tokens</Box>
+        <Box>Looks Like you do not have any ETH</Box>
       )}
     </>
   );
 };
 
-export default ERC20Balances;
+export default ETHBalances;

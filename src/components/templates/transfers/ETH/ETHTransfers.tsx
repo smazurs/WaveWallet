@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
-const ERC20Transfers = () => {
+const ETHTransfers = () => {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [txs, setTxs] = useState([]);
@@ -92,4 +92,4 @@ const ERC20Transfers = () => {
   );
 };
 
-export default ERC20Transfers;
+export default ETHTransfers;
