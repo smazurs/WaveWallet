@@ -27,6 +27,20 @@ const ETHTransfers = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       ethers.utils.getAddress(recipient); // Validates the address
+
+      // Make a request to the API route to check if the transaction is approved by Arduino
+      const response = await fetch('/arduino_handshake', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recipient, amount }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Transaction not approved by Arduino');
+      }
+
       const tx = await signer.sendTransaction({
         to: recipient,
         value: ethers.utils.parseEther(amount),
@@ -77,7 +91,7 @@ const ETHTransfers = () => {
           />
         </FormControl>
         <Button colorScheme="blue" onClick={startPayment}>
-          Pay now
+          Send
         </Button>
       </VStack>
       {txs.length > 0 && (

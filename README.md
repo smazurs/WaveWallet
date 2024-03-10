@@ -1,92 +1,64 @@
 # WaveWallet
 
-WaveWallet is an Ethereum dapp pioneering project aimed at redefining the interaction between crypto wallets by leveraging Radio Frequency (RF) signals for communication. This initiative brings to the forefront a seamless integration between hardware and blockchain technology, enabling direct wallet-to-wallet communications and transactions without the need for internet connectivity.
+This project demonstrates how to integrate an Arduino RF handshake process with a Next.js application to approve Ethereum transactions before sending them through Metamask. The handshake is performed between two Arduino devices communicating via RF waves, utilizing frequency hopping to increase security and prevent unauthorized interception of the communication.
 
-![](https://user-images.githubusercontent.com/78314301/186810447-fa66cd80-5bbb-4e41-b29f-862c8cc67d43.gif)
+# Table of contents
 
-## Main Features
+  - [Overview](#Overview)
+  - [How it Works](##How-it-Works)
+  - [Dependencies](##Dependencies)
+  - [License](##License)
 
-- **Wallet-to-Wallet Communication**: Securely send and receive cryptocurrencies and NFTs between wallets over RF signals.
-- **Arduino RF Communication**: Leverage Arduino hardware to establish a decentralized network of crypto wallets communicating via RF.
-- **Blockchain Integration**: Utilize Ethereum blockchain technologies for transaction integrity and verification without direct internet access.
-- **Secure Handshakes and Transactions**: Implement cryptographic methods to ensure secure handshakes between devices, followed by verified transactions.
+## Overview
 
-**Clone or fork `WaveWallet`:**
+The project consists of three main components:
 
-```sh
-git clone https://github.com/smazurs/WaveWallet.git
-```
+1. A Next.js frontend application that allows users to enter a recipient address and an amount of ETH to send. When the user clicks the "Send" button, the application communicates with an API route to check if the transaction is approved by the Arduino devices.
 
-**Install all dependencies:**
+2. A Python script that communicates with the sender Arduino device over a serial connection to initiate the RF handshake process and receive the approval status.
 
-```bash
-npm install
-```
+3. Two Arduino devices (sender and receiver) equipped with RF modules that communicate with each other using frequency hopping to approve or reject the transaction based on certain conditions.
 
- **Run WaveWallet:**
+## How it Works
 
-```bash
-npm run dev
-```
+1. The user enters the recipient address and the amount of ETH to send in the Next.js frontend application.
 
-This will initiate the WaveWallet application, enabling RF communication and blockchain interactions through the user interface.
+2. When the user clicks the "Send" button, the `startPayment` function in `ETHTransfers.tsx` is triggered.
 
-## Technology Stack
+3. The `startPayment` function makes a POST request to the `/arduino-handshake` API route, passing the recipient address and amount as request body.
 
-- **Frontend**: Next.js for the user interface, facilitating wallet management and transaction initiation.
-- **Backend**: Moralis Web3 API for interacting with the Ethereum blockchain, and custom Arduino scripts for RF communication.
-- **Hardware**: Arduino modules equipped with RF transmitters and receivers for offline communication.
+4. The API route (`/arduino-handshake.js`) receives the request and spawns a child process to run the `arduino_handshake.py` Python script, passing the necessary arguments (action, recipient, and amount).
 
-# 🧭 Table of contents
+5. The `arduino_handshake.py` script communicates with the sender Arduino device over a serial connection, sending the transaction details (recipient and amount) to the sender Arduino.
 
-- [🏗 Ethereum Components](#-ethereum-components)
-  - [`<NFTBalances />`](#nftbalances-)
-  - [`<ERC20Balances />`](#erc20balances-)
-  - [`<ERC20Transfers />`](#erc20transfers-)
-  - [`<NFTTransfers />`](#nfttransfers-)
-  - [`<Transactions />`](#transactions-)
+6. The sender Arduino device initiates the RF handshake process by sending the transaction details to the receiver Arduino device via RF waves, using frequency hopping to change the communication channel at predefined intervals.
 
-# 🏗 Ethereum Components
+7. The receiver Arduino device, also employing frequency hopping, receives the transaction details and determines whether to approve or reject the transaction based on its internal logic (not provided in this example).
 
-### `<NFTBalances />`
+8. The receiver Arduino sends the approval status back to the sender Arduino via RF waves, using frequency hopping to maintain secure communication.
 
-![image](https://user-images.githubusercontent.com/78314301/186813114-2b2265a5-5177-4ab8-9076-588107d450f1.png)
+9. The sender Arduino receives the approval status and sends it back to the Python script over the serial connection.
 
-location: `src/component/templates/balances/NFT/NFTBalances.tsx`
+10. The Python script prints the approval status (`True` or `False`) to the console, which is captured by the API route.
 
-🎨 `<NFTBalances />` : displays the user's balances. Uses Moralis Evm API.
+11. The API route sends a response back to the Next.js frontend application, indicating whether the transaction is approved or not.
 
-### `<ERC20Balances />`
+12. If the transaction is approved, the Next.js application proceeds to send the transaction through Metamask using the `ethers.js` library.
 
-![image](https://user-images.githubusercontent.com/78314301/186813448-a0b63106-bcba-46d2-be80-3a7d962e2302.png)
+13. If the transaction is not approved, an error is thrown, and the transaction is not sent. An error toast notification is displayed to the user.
 
-location: `src/component/templates/balances/ERC20/ERC20Balances.tsx`
+## Dependencies
 
-💰 `<ERC20Balances />` : displays the user's ERC20 balances.
-
-### `<ERC20Transfers />`
-
-![image](https://user-images.githubusercontent.com/78314301/186813957-69badb89-bf93-44e6-90e7-c35801c24d9a.png)
-
-location: `src/component/templates/transfers/ERC20/ERC20Transfers.tsx`
-
-💰 `<ERC20Transfers />` : displays the user's ERC20 transfers.
-
-### `<NFTTransfers />`
-
-![image](https://user-images.githubusercontent.com/78314301/186814187-916851d7-703d-4e30-9b28-b66b0bea90b1.png)
-
-location: `src/component/templates/transfers/NFT/NFTTransfers.tsx`
-
-🎨 `<NFTTransfers />` : displays the user's NFT transfers.
-
-### `<Transactions />`
-
-![image](https://user-images.githubusercontent.com/78314301/186812987-74d8e534-5171-4a53-83f9-3b470bc97e63.png)
-
-location: `src/component/templates/transactions/Transactions.tsx`
-
-💰 `<Transactions />` : displays the user's transactions.
+- Next.js
+- React
+- Chakra UI
+- Moralis API
+- MetaMask APO
+- ethers.js
+- Python
+- pyserial
+- Arduino IDE
+- RF modules (nRF24L01)
 
 ## License
 
