@@ -9,15 +9,21 @@ import {
   useToast,
   VStack,
   Text,
+  HStack,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
+// Component for handling ETH transfers with Arduino handshake verification
 const ETHTransfers = () => {
+  // State variables for recipient address, amount to be sent, and transactions history
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [txs, setTxs] = useState([]);
+
+  // Chakra UI toast for showing notifications
   const toast = useToast();
 
+  // Function to initiate payment after Arduino handshake confirmation
   const startPayment = async () => {
     try {
       if (!window.ethereum)
@@ -27,13 +33,10 @@ const ETHTransfers = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       ethers.utils.getAddress(recipient); // Validates the address
-      ethers.utils.getAddress(recipient); // Validates the address
       const tx = await signer.sendTransaction({
         to: recipient,
         value: ethers.utils.parseEther(amount),
       });
-      console.log("tx", tx);
-      setTxs([tx]);
       console.log("tx", tx);
       setTxs([tx]);
       toast({
@@ -57,7 +60,7 @@ const ETHTransfers = () => {
 
   // Function to handle the receiving process (listening for Arduino confirmation)
   const handleReceive = () => {
-    window.open("http://localhost:http://127.0.0.1:5000/", "_blank");
+    window.open("http://127.0.0.1:5000/", "_blank");
   };
 
   // UI components for entering transaction details, sending, and receiving
@@ -85,9 +88,14 @@ const ETHTransfers = () => {
             placeholder="Enter amount"
           />
         </FormControl>
-        <Button colorScheme="blue" onClick={startPayment}>
-          Pay now
-        </Button>
+        <HStack spacing={4}>
+          <Button colorScheme="blue" onClick={startPayment}>
+            Send
+          </Button>
+          <Button colorScheme="green" onClick={handleReceive}>
+            Receive
+          </Button>
+        </HStack>
       </VStack>
       {txs.length > 0 && (
         <Box mt="4">
