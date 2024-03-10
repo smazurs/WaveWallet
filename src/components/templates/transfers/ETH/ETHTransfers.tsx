@@ -91,9 +91,6 @@ const ETHTransfers = () => {
             placeholder="Enter amount"
           />
         </FormControl>
-        <Button colorScheme="blue" onClick={startPayment}>
-          Send
-        </Button>
         <HStack spacing={4}>
           <Button colorScheme="blue" onClick={startPayment}>
             Send
