@@ -9,6 +9,7 @@ import {
   useToast,
   VStack,
   Text,
+  HStack,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
@@ -76,9 +77,12 @@ const ETHTransfers = () => {
             placeholder="Enter amount"
           />
         </FormControl>
-        <Button colorScheme="blue" onClick={startPayment}>
-          Pay now
-        </Button>
+        <HStack spacing={4}>
+          <Button colorScheme="blue" onClick={startPayment}>
+            Send
+          </Button>
+          <Button colorScheme="green">Receive</Button>
+        </HStack>
       </VStack>
       {txs.length > 0 && (
         <Box mt="4">
