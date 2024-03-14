@@ -29,7 +29,7 @@ const Home = () => {
         bg={colorMode === 'light' ? 'white' : 'gray.800'}
         color={colorMode === 'light' ? 'black' : 'white'}
       >
-        <Heading size="xl" textAlign="center">
+        <Heading size="3xl" textAlign="center">
           Welcome to WaveWallet!
         </Heading>
         <Heading size="lg" textAlign="center">
