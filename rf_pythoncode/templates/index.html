@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secured Encryption Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .button-container {
+            margin-top: 40px;
+            position: relative;
+        }
+        .button-label {
+            font-size: 24px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        #run-button {
+            padding: 20px 60px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #run-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        #output {
+            margin-top: 50px;
+            font-size: 18px;
+            text-align: center;
+            opacity: 0.8;
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0;
+            pointer-events: none;
+            animation: glow 2s infinite;
+        }
+        @keyframes glow {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#run-button').click(function() {
+                $.ajax({
+                    url: '/run_code',
+                    type: 'POST',
+                    success: function(response) {
+                        $('#output').text('Result: ' + response.output);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Secured Encryption Page</h1>
+        <div class="button-container">
+            <p class="button-label">Please press the button to confirm</p>
+            <button id="run-button">Confirm the HandShake</button>
+            <div class="glow"></div>
+        </div>
+        <pre id="output"></pre>
+    </div>
+</body>
+</html>
