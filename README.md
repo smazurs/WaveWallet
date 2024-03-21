@@ -2,8 +2,18 @@
 
 This project demonstrates how to integrate an Arduino RF handshake process with a Next.js application to approve Ethereum transactions before sending them through Metamask. The handshake is performed between two Arduino devices communicating via RF waves, utilizing frequency hopping to increase security and prevent unauthorized interception of the communication.
 
-![Wave Wallet Galaxy Demo](media/galaxy_homepage.gif)
+
+
+
+https://github.com/smazurs/WaveWallet/assets/55670928/3f4c1a25-3fe4-4ca8-b996-0f15c769ad82
+
+
 ![Wave Wallet Demo](media/wavewallet_demo.gif)
+<!-- ![Wave Wallet Galaxy Demo](media/galaxy_homepage.mov) -->
+
+
+
+
 
 # Table of contents
 
