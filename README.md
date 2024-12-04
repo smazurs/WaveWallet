@@ -1,4 +1,5 @@
 ![Wave Wallet Logo](media/wavewallet_logo.png)
+
 [Best UI/UX Award at GrizzHacks](https://devpost.com/software/wavewallet) 
 
 
